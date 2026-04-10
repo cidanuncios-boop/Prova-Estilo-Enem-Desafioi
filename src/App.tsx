@@ -166,7 +166,7 @@ export default function App() {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       console.error('GEMINI_API_KEY is missing');
-      alert('Erro de configuração: Chave de API não encontrada. Verifique as configurações do projeto.');
+      alert('Erro de configuração: Chave de API não encontrada. No seu painel de hospedagem, você deve configurar a variável GEMINI_API_KEY antes de gerar o site (Build).');
       return;
     }
 
@@ -176,7 +176,6 @@ export default function App() {
       const model = "gemini-3-flash-preview";
 
       console.log('Generating exam with model:', model);
-      console.log('Content length:', content.length);
 
       const prompt = `
         Você é um especialista em elaboração de questões do ENEM.
@@ -235,12 +234,12 @@ export default function App() {
       });
 
       if (!response.text) {
-        throw new Error('Empty response from AI');
+        throw new Error('Resposta vazia da IA');
       }
 
       const data = JSON.parse(response.text);
       if (!data.questions || !Array.isArray(data.questions)) {
-        throw new Error('Invalid JSON structure from AI');
+        throw new Error('Estrutura JSON inválida recebida da IA');
       }
 
       const formattedQuestions = data.questions.map((q: any) => ({
